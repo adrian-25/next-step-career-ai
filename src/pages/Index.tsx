@@ -13,7 +13,7 @@ const Index = () => {
   const [uploadedData, setUploadedData] = useState({
     resume: null,
     linkedin: '',
-    github: false
+    github: ''
   });
 
   const handleDataUpload = (type: string, data: any) => {

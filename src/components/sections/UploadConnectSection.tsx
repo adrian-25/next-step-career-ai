@@ -11,12 +11,13 @@ interface UploadConnectSectionProps {
   uploadedData: {
     resume: any;
     linkedin: string;
-    github: boolean;
+    github: string;
   };
 }
 
 const UploadConnectSection = ({ onDataUpload, uploadedData }: UploadConnectSectionProps) => {
   const [linkedinUrl, setLinkedinUrl] = useState('');
+  const [githubUrl, setGithubUrl] = useState('');
   const [isDragging, setIsDragging] = useState(false);
   const { toast } = useToast();
 
@@ -84,13 +85,20 @@ const UploadConnectSection = ({ onDataUpload, uploadedData }: UploadConnectSecti
     }
   };
 
-  const handleGithubConnect = () => {
-    // Mock GitHub connection
-    onDataUpload('github', true);
-    toast({
-      title: "GitHub connected!",
-      description: "We're analyzing your repositories now.",
-    });
+  const handleGithubSubmit = () => {
+    if (githubUrl && githubUrl.includes('github.com')) {
+      onDataUpload('github', githubUrl);
+      toast({
+        title: "GitHub profile connected!",
+        description: "We're analyzing your repositories now.",
+      });
+    } else {
+      toast({
+        title: "Invalid GitHub URL",
+        description: "Please enter a valid GitHub profile URL.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -253,21 +261,32 @@ const UploadConnectSection = ({ onDataUpload, uploadedData }: UploadConnectSecti
                   Analyze your coding activity and project contributions
                 </p>
               </CardHeader>
-              <CardContent>
+              <CardContent className="space-y-4">
                 {uploadedData.github ? (
                   <div className="text-center space-y-2 p-4 bg-success/5 rounded-lg">
                     <CheckCircle2 className="w-8 h-8 text-success mx-auto" />
                     <p className="text-success font-medium">GitHub connected!</p>
-                    <p className="text-text-secondary text-xs">Analyzing your repositories...</p>
+                    <p className="text-text-secondary text-xs break-all">{uploadedData.github}</p>
                   </div>
                 ) : (
-                  <Button
-                    onClick={handleGithubConnect}
-                    className="w-full bg-text-primary hover:bg-text-primary/90 btn-scale"
-                  >
-                    <Github className="w-4 h-4 mr-2" />
-                    Connect GitHub
-                  </Button>
+                  <>
+                    <div className="space-y-2">
+                      <Input
+                        placeholder="https://github.com/yourusername"
+                        value={githubUrl}
+                        onChange={(e) => setGithubUrl(e.target.value)}
+                        className="text-sm"
+                      />
+                    </div>
+                    <Button
+                      onClick={handleGithubSubmit}
+                      className="w-full bg-text-primary hover:bg-text-primary/90 btn-scale"
+                      disabled={!githubUrl}
+                    >
+                      <Github className="w-4 h-4 mr-2" />
+                      Connect GitHub
+                    </Button>
+                  </>
                 )}
               </CardContent>
             </Card>

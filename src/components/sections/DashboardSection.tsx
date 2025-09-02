@@ -19,7 +19,7 @@ interface DashboardSectionProps {
   uploadedData: {
     resume: any;
     linkedin: string;
-    github: boolean;
+    github: string;
   };
 }
 
