@@ -131,28 +131,26 @@ const DashboardSection = ({ uploadedData }: DashboardSectionProps) => {
                 </Card>
               </motion.div>
 
-              {/* Job Fit Score */}
+              {/* Placement Predictor */}
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
               >
-                <Card className="card-hover">
+                <Card className="card-hover bg-gradient-to-br from-primary/5 to-secondary/5">
                   <CardHeader className="pb-2">
                     <div className="flex items-center justify-between">
-                      <CardTitle className="text-sm font-medium text-text-secondary">Job Fit Score</CardTitle>
-                      <Briefcase className="w-4 h-4 text-warning" />
+                      <CardTitle className="text-sm font-medium text-text-secondary">Placement Probability</CardTitle>
+                      <Target className="w-4 h-4 text-primary" />
                     </div>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-3">
-                      <div className={`text-3xl font-bold ${getScoreColor(dashboardData.jobFitScore)}`}>
-                        {dashboardData.jobFitScore}%
-                      </div>
-                      <Progress value={dashboardData.jobFitScore} className="h-2" />
+                      <div className="text-3xl font-bold text-primary">74%</div>
+                      <Progress value={74} className="h-2" />
                       <div className="flex items-center gap-1 text-xs">
-                        <ArrowDown className="w-3 h-3 text-warning" />
-                        <span className="text-warning">Room to improve</span>
+                        <ArrowUp className="w-3 h-3 text-success" />
+                        <span className="text-success">High success rate</span>
                       </div>
                     </div>
                   </CardContent>

@@ -10,13 +10,21 @@ import {
   Calendar,
   Code,
   Users,
-  Award
+  Award,
+  Brain,
+  GitCompare,
+  Search,
+  MessageCircle
 } from 'lucide-react';
 import ResumeAnalysisTab from '@/components/tabs/ResumeAnalysisTab';
 import GitHubAnalysisTab from '@/components/tabs/GitHubAnalysisTab';
 import LinkedInAnalysisTab from '@/components/tabs/LinkedInAnalysisTab';
 import JobFitTab from '@/components/tabs/JobFitTab';
 import ReportsTab from '@/components/tabs/ReportsTab';
+import PlacementPredictorTab from '@/components/tabs/PlacementPredictorTab';
+import ResumeCompareTab from '@/components/tabs/ResumeCompareTab';
+import SkillGapAnalysisTab from '@/components/tabs/SkillGapAnalysisTab';
+import MockInterviewTab from '@/components/tabs/MockInterviewTab';
 
 interface DetailedTabsSectionProps {
   activeTab: string;
@@ -50,6 +58,34 @@ const DetailedTabsSection = ({ activeTab, setActiveTab, uploadedData }: Detailed
       icon: Linkedin,
       description: 'Professional network insights',
       available: !!uploadedData.linkedin
+    },
+    {
+      id: 'placement',
+      label: 'Placement Predictor',
+      icon: Brain,
+      description: 'Job success probability analysis',
+      available: true
+    },
+    {
+      id: 'compare',
+      label: 'Resume Compare',
+      icon: GitCompare,
+      description: 'Side-by-side resume analysis',
+      available: true
+    },
+    {
+      id: 'skillgap',
+      label: 'Skill Gap',
+      icon: Search,
+      description: 'Job description skill matching',
+      available: true
+    },
+    {
+      id: 'interview',
+      label: 'Mock Interview',
+      icon: MessageCircle,
+      description: 'AI-generated interview questions',
+      available: true
     },
     {
       id: 'jobfit',
@@ -94,7 +130,7 @@ const DetailedTabsSection = ({ activeTab, setActiveTab, uploadedData }: Detailed
           <Card className="overflow-hidden">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               {/* Tab List */}
-              <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 h-auto p-2 bg-neutral-light">
+              <TabsList className="grid w-full grid-cols-3 md:grid-cols-4 lg:grid-cols-8 h-auto p-2 bg-neutral-light">
                 {tabs.map((tab) => {
                   const Icon = tab.icon;
                   return (
@@ -134,6 +170,22 @@ const DetailedTabsSection = ({ activeTab, setActiveTab, uploadedData }: Detailed
 
                 <TabsContent value="linkedin" className="mt-0">
                   <LinkedInAnalysisTab uploadedData={uploadedData} />
+                </TabsContent>
+
+                <TabsContent value="placement" className="mt-0">
+                  <PlacementPredictorTab uploadedData={uploadedData} />
+                </TabsContent>
+
+                <TabsContent value="compare" className="mt-0">
+                  <ResumeCompareTab uploadedData={uploadedData} />
+                </TabsContent>
+
+                <TabsContent value="skillgap" className="mt-0">
+                  <SkillGapAnalysisTab uploadedData={uploadedData} />
+                </TabsContent>
+
+                <TabsContent value="interview" className="mt-0">
+                  <MockInterviewTab uploadedData={uploadedData} />
                 </TabsContent>
 
                 <TabsContent value="jobfit" className="mt-0">

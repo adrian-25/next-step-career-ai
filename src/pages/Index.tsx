@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import HeroSection from '@/components/sections/HeroSection';
 import UploadConnectSection from '@/components/sections/UploadConnectSection';
 import DashboardSection from '@/components/sections/DashboardSection';
+import GamificationSection from '@/components/sections/GamificationSection';
 import DetailedTabsSection from '@/components/sections/DetailedTabsSection';
 import ReportsSection from '@/components/sections/ReportsSection';
 import AboutSection from '@/components/sections/AboutSection';
@@ -41,6 +42,9 @@ const Index = () => {
         >
           {/* Dashboard Overview Cards */}
           <DashboardSection uploadedData={uploadedData} />
+          
+          {/* Gamification Layer */}
+          <GamificationSection uploadedData={uploadedData} />
           
           {/* Detailed Analysis Tabs */}
           <DetailedTabsSection activeTab={activeTab} setActiveTab={setActiveTab} uploadedData={uploadedData} />
