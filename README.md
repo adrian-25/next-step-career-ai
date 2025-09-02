@@ -2,7 +2,8 @@
 
 ## Project info
 
-**URL**: https://lovable.dev/projects/90cfe9f6-d2c6-4d31-9156-2d785dfa8d76
+**URL**: [[https://lovable.dev/projects/90cfe9f6-d2c6-4d31-9156-2d785dfa8d76
+](https://preview--next-step-career-ai.lovable.app/](https://preview--next-step-career-ai.lovable.app/)
 
 ## How can I edit this code?
 
