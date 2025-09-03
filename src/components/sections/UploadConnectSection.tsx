@@ -19,6 +19,7 @@ const UploadConnectSection = ({ onDataUpload, uploadedData }: UploadConnectSecti
   const [linkedinUrl, setLinkedinUrl] = useState('');
   const [githubUrl, setGithubUrl] = useState('');
   const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
