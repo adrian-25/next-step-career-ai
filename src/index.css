@@ -141,9 +141,41 @@
     @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-hover;
   }
   
-  /* Button scale effect */
+  /* Enhanced Button Animations */
   .btn-scale {
-    @apply transition-transform duration-150 active:scale-[0.98];
+    @apply transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95;
+  }
+  
+  .btn-glow:hover {
+    @apply shadow-lg;
+    box-shadow: 0 10px 25px -5px hsl(var(--primary) / 0.4);
+  }
+
+  /* File Upload Enhancements */
+  .file-drop-zone {
+    @apply transition-all duration-300 ease-in-out;
+  }
+  
+  .file-drop-zone:hover {
+    @apply border-primary/50 bg-primary/5 transform scale-[1.01];
+  }
+  
+  .file-drop-active {
+    @apply border-primary bg-primary/10 transform scale-[1.02] shadow-lg;
+    animation: pulse 1.5s infinite;
+  }
+  
+  /* Upload button states */
+  .upload-button {
+    @apply transition-all duration-300 ease-in-out;
+  }
+  
+  .upload-button:disabled {
+    @apply opacity-50 cursor-not-allowed transform-none;
+  }
+  
+  .upload-button:not(:disabled):hover {
+    @apply bg-primary/10 border-primary shadow-md transform scale-105;
   }
   
   /* Gradient backgrounds */

@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles, Target, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import DemoModal from '@/components/ui/demo-modal';
 
 const HeroSection = () => {
   const scrollToUpload = () => {

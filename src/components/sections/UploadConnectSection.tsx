@@ -41,6 +41,10 @@ const UploadConnectSection = ({ onDataUpload, uploadedData }: UploadConnectSecti
     }
   };
 
+  const handleBrowseClick = () => {
+    fileInputRef.current?.click();
+  };
+
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(true);
