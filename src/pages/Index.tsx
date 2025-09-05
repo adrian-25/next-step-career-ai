@@ -6,6 +6,7 @@ import DashboardSection from '@/components/sections/DashboardSection';
 import GamificationSection from '@/components/sections/GamificationSection';
 import DetailedTabsSection from '@/components/sections/DetailedTabsSection';
 import ReportsSection from '@/components/sections/ReportsSection';
+import AIMentorSection from '@/components/sections/AIMentorSection';
 import AboutSection from '@/components/sections/AboutSection';
 
 const Index = () => {
@@ -53,6 +54,9 @@ const Index = () => {
           <ReportsSection uploadedData={uploadedData} />
         </motion.div>
       )}
+      
+      {/* AI Mentor Section */}
+      <AIMentorSection />
       
       {/* About Section */}
       <AboutSection />
