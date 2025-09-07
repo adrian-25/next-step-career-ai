@@ -175,17 +175,21 @@ const UploadConnectSection = ({ onDataUpload, uploadedData }: UploadConnectSecti
                           Drag & drop your resume here
                         </p>
                         <p className="text-text-secondary text-sm mb-3">or</p>
-                        <label className="cursor-pointer">
-                          <Button variant="outline" size="sm" className="btn-scale">
-                            Browse Files
-                          </Button>
-                          <input
-                            type="file"
-                            accept=".pdf"
-                            onChange={handleFileUpload}
-                            className="hidden"
-                          />
-                        </label>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="btn-scale"
+                          onClick={handleBrowseClick}
+                        >
+                          Browse Files
+                        </Button>
+                        <input
+                          ref={fileInputRef}
+                          type="file"
+                          accept=".pdf"
+                          onChange={handleFileUpload}
+                          className="hidden"
+                        />
                       </div>
                       <p className="text-xs text-text-secondary">Supports PDF files only</p>
                     </div>

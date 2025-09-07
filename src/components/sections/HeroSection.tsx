@@ -91,7 +91,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+            className="flex justify-center lg:justify-start"
           >
             <Button
               onClick={scrollToUpload}
@@ -100,14 +100,6 @@ const HeroSection = () => {
             >
               Analyze My Profile
               <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
-            <Button
-              onClick={scrollToDashboard}
-              variant="outline"
-              size="lg"
-              className="border-2 border-primary text-primary hover:bg-primary/10 btn-scale font-medium px-8 py-3 text-base"
-            >
-              Preview Demo
             </Button>
           </motion.div>
         </motion.div>

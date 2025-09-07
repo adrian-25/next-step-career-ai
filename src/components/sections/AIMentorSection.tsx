@@ -76,9 +76,18 @@ const AIMentorSection = () => {
 
     } catch (error) {
       console.error('Error sending message:', error);
+      
+      // Add AI response with error message for graceful handling
+      const errorMessage: Message = {
+        role: 'assistant',
+        content: "I apologize, but I'm experiencing technical difficulties right now. Our AI mentor is busy helping other users. Please try again in a few moments, and I'll be happy to help with your career questions!",
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, errorMessage]);
+      
       toast({
-        title: "Error",
-        description: "Failed to get response from AI mentor. Please try again.",
+        title: "Connection Issue",
+        description: "Our AI mentor is busy. Please try again in a few seconds.",
         variant: "destructive"
       });
     } finally {
