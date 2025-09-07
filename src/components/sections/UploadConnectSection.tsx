@@ -114,13 +114,20 @@ const UploadConnectSection = ({ onDataUpload, uploadedData }: UploadConnectSecti
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="text-center mb-16"
         >
-          <h2 className="font-heading text-3xl md:text-4xl font-bold text-text-primary mb-4">
-            Connect Your Professional Profiles
+          <motion.div className="flex items-center justify-center gap-4 mb-6">
+            <div className="w-3 h-3 bg-neon-pink rounded-full animate-glow-pulse" />
+            <div className="w-2 h-2 bg-neon-blue rounded-full animate-glow-pulse" style={{animationDelay: '0.2s'}} />
+            <div className="w-4 h-4 bg-primary rounded-full animate-glow-pulse" style={{animationDelay: '0.4s'}} />
+          </motion.div>
+          <h2 className="font-heading text-4xl md:text-5xl font-black text-text-primary mb-6">
+            Connect Your <span className="gradient-text">Professional Vibes</span> ✨
           </h2>
-          <p className="text-text-secondary text-lg max-w-2xl mx-auto">
-            Upload your resume and connect your professional profiles to get personalized insights and recommendations.
+          <p className="text-text-secondary text-xl max-w-2xl mx-auto font-medium">
+            Upload your resume and connect your socials to get that 
+            <span className="text-primary font-bold"> personalized glow-up</span> with 
+            <span className="text-secondary font-bold"> fire recommendations</span>! 🔥
           </p>
         </motion.div>
 
@@ -132,56 +139,95 @@ const UploadConnectSection = ({ onDataUpload, uploadedData }: UploadConnectSecti
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            <Card className="card-hover h-full">
-              <CardHeader className="text-center">
-                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Card className="card-hover h-full border-2 border-white/20 backdrop-blur-xl">
+              <CardHeader className="text-center pb-6">
+                <motion.div 
+                  className={`w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6 ${
+                    uploadedData.resume 
+                      ? 'bg-gradient-to-br from-neon-green/20 to-success/20 shadow-glow-cyan' 
+                      : 'bg-gradient-to-br from-primary/20 to-secondary/20 shadow-neon'
+                  }`}
+                  whileHover={{ scale: 1.05, rotate: 5 }}
+                  transition={{ duration: 0.3 }}
+                >
                   {uploadedData.resume ? (
-                    <CheckCircle2 className="w-6 h-6 text-success" />
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ duration: 0.5, type: "spring" }}
+                    >
+                      <CheckCircle2 className="w-10 h-10 text-neon-green" />
+                    </motion.div>
                   ) : (
-                    <FileText className="w-6 h-6 text-primary" />
+                    <FileText className="w-10 h-10 text-primary animate-bounce-subtle" />
                   )}
-                </div>
-                <CardTitle className="text-xl">Resume Analysis</CardTitle>
-                <p className="text-text-secondary text-sm">
-                  Upload your resume for ATS scoring and optimization suggestions
+                </motion.div>
+                <CardTitle className="text-2xl font-black gradient-text">
+                  {uploadedData.resume ? '📄 Resume Uploaded!' : '📄 Resume Analysis'}
+                </CardTitle>
+                <p className="text-text-secondary text-base font-medium">
+                  {uploadedData.resume 
+                    ? 'Your resume is looking fire! 🔥' 
+                    : 'Upload your resume for ATS scoring and that optimization glow-up'
+                  }
                 </p>
               </CardHeader>
-              <CardContent>
+              <CardContent className="px-8 pb-8">
                 <div
                   className={`
-                    border-2 border-dashed rounded-xl p-6 text-center transition-all duration-300
+                    file-drop-zone p-8 text-center transition-all duration-500 cursor-pointer
                     ${isDragging 
-                      ? 'border-primary bg-primary/5' 
+                      ? 'file-drop-active' 
                       : uploadedData.resume 
-                        ? 'border-success bg-success/5' 
-                        : 'border-border hover:border-primary/50'
+                        ? 'border-neon-green bg-gradient-to-br from-neon-green/10 to-success/10 shadow-glow-cyan' 
+                        : 'border-primary/30 hover:border-primary'
                     }
                   `}
                   onDragOver={handleDragOver}
                   onDragLeave={handleDragLeave}
                   onDrop={handleDrop}
+                  onClick={!uploadedData.resume ? handleBrowseClick : undefined}
                 >
                   {uploadedData.resume ? (
-                    <div className="space-y-2">
-                      <CheckCircle2 className="w-8 h-8 text-success mx-auto" />
-                      <p className="text-success font-medium">Resume uploaded!</p>
-                      <p className="text-text-secondary text-xs">{uploadedData.resume.name}</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-4">
-                      <Upload className="w-8 h-8 text-text-secondary mx-auto" />
+                    <motion.div 
+                      className="space-y-4"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                    >
+                      <motion.div
+                        animate={{ rotate: [0, 360] }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        <CheckCircle2 className="w-16 h-16 text-neon-green mx-auto" />
+                      </motion.div>
                       <div>
-                        <p className="text-text-primary font-medium mb-1">
+                        <p className="text-neon-green font-black text-lg">Resume uploaded! 🎉</p>
+                        <p className="text-text-secondary text-sm font-medium mt-2">{uploadedData.resume.name}</p>
+                        <div className="mt-3 px-4 py-2 bg-gradient-to-r from-neon-green/20 to-success/20 rounded-2xl inline-block">
+                          <span className="text-xs font-bold text-neon-green">Ready for analysis! ✨</span>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <div className="space-y-6">
+                      <motion.div
+                        animate={{ y: [-5, 5, -5] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                      >
+                        <Upload className="w-16 h-16 text-primary mx-auto opacity-80" />
+                      </motion.div>
+                      <div>
+                        <p className="text-text-primary font-black text-lg mb-2">
                           Drag & drop your resume here
                         </p>
-                        <p className="text-text-secondary text-sm mb-3">or</p>
+                        <p className="text-text-secondary text-base mb-4 font-medium">or</p>
                         <Button 
                           variant="outline" 
-                          size="sm" 
-                          className="btn-scale"
+                          size="lg" 
+                          className="btn-scale font-bold px-8 py-3 rounded-3xl border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300"
                           onClick={handleBrowseClick}
                         >
-                          Browse Files
+                          🗂️ Browse Files
                         </Button>
                         <input
                           ref={fileInputRef}
@@ -191,7 +237,11 @@ const UploadConnectSection = ({ onDataUpload, uploadedData }: UploadConnectSecti
                           className="hidden"
                         />
                       </div>
-                      <p className="text-xs text-text-secondary">Supports PDF files only</p>
+                      <div className="flex items-center justify-center gap-2">
+                        <div className="w-2 h-2 bg-primary rounded-full opacity-60" />
+                        <p className="text-sm text-text-secondary font-medium">PDF files only</p>
+                        <div className="w-2 h-2 bg-secondary rounded-full opacity-60" />
+                      </div>
                     </div>
                   )}
                 </div>

@@ -36,10 +36,10 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-primary/20 to-secondary/20 backdrop-blur-sm text-primary px-6 py-3 rounded-3xl text-sm font-bold mb-6 border border-white/20"
           >
-            <Sparkles className="w-4 h-4" />
-            AI-Powered Career Analysis
+            <Sparkles className="w-5 h-5 animate-bounce-subtle" />
+            ✨ AI-Powered Career Glow-Up
           </motion.div>
 
           {/* Main Headline */}
@@ -47,13 +47,12 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-text-primary mb-6 leading-tight"
+            className="font-heading text-5xl md:text-6xl lg:text-7xl font-black text-text-primary mb-6 leading-tight"
           >
-            Take Your{' '}
-            <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Next Step
-            </span>{' '}
-            in Career Growth
+            Level Up Your{' '}
+            <span className="gradient-text font-rounded text-6xl md:text-7xl lg:text-8xl animate-glow-pulse">
+              Career Game
+            </span>
           </motion.h1>
 
           {/* Subtitle */}
@@ -61,10 +60,10 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="text-lg md:text-xl text-text-secondary mb-8 leading-relaxed max-w-2xl mx-auto lg:mx-0"
+            className="text-xl md:text-2xl text-text-secondary mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0 font-medium"
           >
-            Get AI-powered insights on your resume, GitHub profile, and career potential. 
-            Understand how recruiters see you and discover your next career opportunity.
+            Get <span className="text-primary font-bold">AI-powered insights</span> on your resume, GitHub, and career potential. 
+            Discover opportunities and <span className="text-secondary font-bold">vibe check</span> your professional brand! 💯
           </motion.p>
 
           {/* Feature Points */}
@@ -72,17 +71,24 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className="flex flex-wrap gap-6 justify-center lg:justify-start mb-8"
+            className="flex flex-wrap gap-8 justify-center lg:justify-start mb-10"
           >
             {[
-              { icon: Target, text: 'ATS Score Analysis' },
-              { icon: TrendingUp, text: 'Skill Gap Insights' },
-              { icon: Sparkles, text: 'Job Fit Matching' }
+              { icon: Target, text: 'ATS Score Boost', color: 'text-neon-pink' },
+              { icon: TrendingUp, text: 'Skill Gap Insights', color: 'text-primary' },
+              { icon: Sparkles, text: 'Job Fit Magic', color: 'text-secondary' }
             ].map((feature, index) => (
-              <div key={index} className="flex items-center gap-2 text-text-secondary">
-                <feature.icon className="w-5 h-5 text-primary" />
-                <span className="text-sm font-medium">{feature.text}</span>
-              </div>
+              <motion.div 
+                key={index} 
+                className="flex items-center gap-3 text-text-secondary group cursor-pointer"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.2 }}
+              >
+                <div className="p-2 rounded-2xl bg-gradient-to-br from-primary/10 to-secondary/10 group-hover:shadow-neon transition-all duration-300">
+                  <feature.icon className={`w-6 h-6 ${feature.color} group-hover:animate-bounce-subtle`} />
+                </div>
+                <span className="text-base font-bold group-hover:text-primary transition-colors">{feature.text}</span>
+              </motion.div>
             ))}
           </motion.div>
 
@@ -96,10 +102,10 @@ const HeroSection = () => {
             <Button
               onClick={scrollToUpload}
               size="lg"
-              className="bg-primary hover:bg-primary-hover text-primary-foreground btn-scale font-medium px-8 py-3 text-base"
+              className="btn-neon btn-scale font-black px-12 py-4 text-lg rounded-3xl text-white relative overflow-hidden group"
             >
-              Analyze My Profile
-              <ArrowRight className="w-5 h-5 ml-2" />
+              <span className="relative z-10">🚀 Analyze My Vibe</span>
+              <ArrowRight className="w-6 h-6 ml-3 group-hover:translate-x-1 transition-transform relative z-10" />
             </Button>
           </motion.div>
         </motion.div>
@@ -109,55 +115,66 @@ const HeroSection = () => {
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="relative"
+          className="relative float-animation"
         >
-          <Card className="p-6 bg-card shadow-hover card-hover">
-            <div className="space-y-4">
+          <Card className="p-8 card-hover border-2 border-white/20 backdrop-blur-xl">
+            <div className="space-y-6">
               {/* Header */}
               <div className="flex items-center justify-between">
-                <h3 className="font-heading text-lg font-semibold text-text-primary">
-                  Career Dashboard Preview
+                <h3 className="font-heading text-xl font-black text-text-primary">
+                  ✨ Career Dashboard Preview
                 </h3>
                 <div className="flex gap-2">
-                  <div className="w-3 h-3 bg-success rounded-full" />
-                  <div className="w-3 h-3 bg-warning rounded-full" />
-                  <div className="w-3 h-3 bg-destructive rounded-full" />
+                  <div className="w-4 h-4 bg-neon-green rounded-full animate-glow-pulse" />
+                  <div className="w-4 h-4 bg-neon-yellow rounded-full animate-glow-pulse" style={{animationDelay: '0.2s'}} />
+                  <div className="w-4 h-4 bg-neon-pink rounded-full animate-glow-pulse" style={{animationDelay: '0.4s'}} />
                 </div>
               </div>
 
               {/* Mock Dashboard Elements */}
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-4">
                 {/* ATS Score */}
-                <div className="bg-gradient-to-br from-primary/10 to-primary/5 p-4 rounded-xl">
-                  <div className="text-xs text-text-secondary mb-1">ATS Score</div>
-                  <div className="text-2xl font-bold text-primary">87%</div>
-                  <div className="text-xs text-success">+12% improved</div>
-                </div>
+                <motion.div 
+                  className="bg-gradient-to-br from-primary/20 to-primary/10 p-6 rounded-3xl border border-white/20 backdrop-blur-sm hover:shadow-glow-cyan transition-all duration-300"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <div className="text-xs font-bold text-text-secondary mb-2">ATS Score</div>
+                  <div className="text-4xl font-black gradient-text">87%</div>
+                  <div className="text-xs text-neon-green font-bold">+12% fire! 🔥</div>
+                </motion.div>
 
                 {/* Skill Match */}
-                <div className="bg-gradient-to-br from-secondary/10 to-secondary/5 p-4 rounded-xl">
-                  <div className="text-xs text-text-secondary mb-1">Skill Match</div>
-                  <div className="text-2xl font-bold text-secondary">92%</div>
-                  <div className="text-xs text-success">Strong fit</div>
-                </div>
+                <motion.div 
+                  className="bg-gradient-to-br from-secondary/20 to-secondary/10 p-6 rounded-3xl border border-white/20 backdrop-blur-sm hover:shadow-glow-pink transition-all duration-300"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <div className="text-xs font-bold text-text-secondary mb-2">Skill Match</div>
+                  <div className="text-4xl font-black text-secondary">92%</div>
+                  <div className="text-xs text-neon-green font-bold">Perfect vibe ✨</div>
+                </motion.div>
               </div>
 
               {/* Mock Chart Area */}
-              <div className="bg-neutral-light p-4 rounded-xl">
-                <div className="text-xs text-text-secondary mb-3">Skills Radar</div>
-                <div className="h-24 bg-gradient-to-r from-primary/20 via-secondary/20 to-success/20 rounded-lg flex items-center justify-center">
-                  <div className="text-xs text-text-secondary">Interactive Chart Preview</div>
+              <div className="bg-gradient-to-br from-neutral-light/50 to-neutral-light/30 p-6 rounded-3xl backdrop-blur-sm border border-white/10">
+                <div className="text-sm font-bold text-text-secondary mb-4">Skills Radar 🎯</div>
+                <div className="h-32 bg-gradient-to-r from-primary/30 via-secondary/30 to-neon-pink/30 rounded-2xl flex items-center justify-center relative overflow-hidden">
+                  <div className="text-sm font-bold text-text-secondary">Interactive Chart Preview</div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse"></div>
                 </div>
               </div>
 
               {/* Mock Recommendations */}
-              <div className="space-y-2">
-                <div className="text-xs text-text-secondary">Top Recommendations</div>
-                {['Add React certification', 'Improve LinkedIn summary', 'GitHub activity boost'].map((rec, i) => (
-                  <div key={i} className="flex items-center gap-2 text-xs">
-                    <div className="w-1 h-1 bg-primary rounded-full" />
-                    <span className="text-text-secondary">{rec}</span>
-                  </div>
+              <div className="space-y-3">
+                <div className="text-sm font-bold text-text-secondary">🎯 Top Recommendations</div>
+                {['Add React certification 💻', 'Improve LinkedIn glow-up ✨', 'GitHub activity boost 🚀'].map((rec, i) => (
+                  <motion.div 
+                    key={i} 
+                    className="flex items-center gap-3 text-sm p-3 rounded-2xl bg-gradient-to-r from-primary/5 to-secondary/5 border border-white/10"
+                    whileHover={{ x: 4 }}
+                  >
+                    <div className="w-2 h-2 bg-gradient-neon rounded-full animate-glow-pulse" />
+                    <span className="font-medium text-text-secondary">{rec}</span>
+                  </motion.div>
                 ))}
               </div>
             </div>
@@ -165,14 +182,14 @@ const HeroSection = () => {
 
           {/* Floating Elements */}
           <motion.div
-            animate={{ y: [-10, 10, -10] }}
-            transition={{ duration: 3, repeat: Infinity }}
-            className="absolute -top-4 -right-4 w-8 h-8 bg-primary/20 rounded-full"
+            animate={{ y: [-10, 10, -10], rotate: [0, 180, 360] }}
+            transition={{ duration: 4, repeat: Infinity }}
+            className="absolute -top-6 -right-6 w-12 h-12 bg-gradient-to-br from-neon-pink to-primary rounded-full opacity-60"
           />
           <motion.div
-            animate={{ y: [10, -10, 10] }}
-            transition={{ duration: 3, repeat: Infinity, delay: 1.5 }}
-            className="absolute -bottom-4 -left-4 w-6 h-6 bg-secondary/20 rounded-full"
+            animate={{ y: [10, -10, 10], rotate: [360, 180, 0] }}
+            transition={{ duration: 4, repeat: Infinity, delay: 2 }}
+            className="absolute -bottom-6 -left-6 w-8 h-8 bg-gradient-to-br from-secondary to-neon-blue rounded-full opacity-60"
           />
         </motion.div>
       </div>

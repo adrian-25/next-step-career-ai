@@ -119,24 +119,47 @@ const AIMentorSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <Sparkles className="w-6 h-6 text-primary" />
-              <h2 className="font-heading text-3xl font-bold text-text-primary">
-                AI Career Mentor
+            <div className="flex items-center justify-center gap-3 mb-6">
+              <motion.div 
+                className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-3xl flex items-center justify-center shadow-glow-cyan"
+                animate={{ rotate: [0, 5, -5, 0] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                <Sparkles className="w-8 h-8 text-white animate-bounce-subtle" />
+              </motion.div>
+              <h2 className="font-heading text-4xl font-black gradient-text">
+                AI Career Bestie
               </h2>
-              <Sparkles className="w-6 h-6 text-primary" />
+              <motion.div 
+                className="w-16 h-16 bg-gradient-to-br from-secondary to-neon-pink rounded-3xl flex items-center justify-center shadow-glow-pink"
+                animate={{ rotate: [0, -5, 5, 0] }}
+                transition={{ duration: 2, repeat: Infinity, delay: 1 }}
+              >
+                <Sparkles className="w-8 h-8 text-white animate-bounce-subtle" />
+              </motion.div>
             </div>
-            <p className="text-text-secondary text-lg max-w-2xl mx-auto">
-              Get personalized career advice, interview tips, and skill development guidance from our AI mentor.
+            <p className="text-text-secondary text-xl max-w-2xl mx-auto font-medium">
+              Get personalized career advice, interview tips, and skill development guidance from your 
+              <span className="text-primary font-bold"> AI bestie</span>! 
+              She's here to help you <span className="text-secondary font-bold">glow up</span> professionally ✨
             </p>
           </motion.div>
         </div>
 
-        <Card className="card-hover h-[600px] flex flex-col">
-          <CardHeader className="pb-4">
-            <CardTitle className="flex items-center gap-2 text-text-primary">
-              <Bot className="w-5 h-5 text-primary" />
-              Career Mentor Chat
+        <Card className="card-hover h-[600px] flex flex-col border-2 border-white/20 backdrop-blur-xl">
+          <CardHeader className="pb-4 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-t-2xl border-b border-white/10">
+            <CardTitle className="flex items-center gap-3 text-text-primary">
+              <motion.div 
+                className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center shadow-neon"
+                animate={{ scale: [1, 1.05, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                <Bot className="w-6 h-6 text-white" />
+              </motion.div>
+              <div>
+                <div className="font-black text-xl">Career Bestie Chat 💬</div>
+                <div className="text-sm font-normal text-text-secondary">Your AI career companion</div>
+              </div>
             </CardTitle>
           </CardHeader>
 
@@ -154,32 +177,47 @@ const AIMentorSection = () => {
                       transition={{ duration: 0.3 }}
                       className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                     >
-                      <div className={`flex items-start gap-3 max-w-[80%] ${
+                      <div className={`flex items-start gap-4 max-w-[80%] ${
                         message.role === 'user' ? 'flex-row-reverse' : 'flex-row'
                       }`}>
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                          message.role === 'user' 
-                            ? 'bg-primary text-white' 
-                            : 'bg-secondary text-text-primary'
-                        }`}>
+                        <motion.div 
+                          className={`w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 border-2 ${
+                            message.role === 'user' 
+                              ? 'bg-gradient-to-br from-primary to-secondary border-white/20 shadow-glow-cyan' 
+                              : 'bg-gradient-to-br from-neutral-light to-white border-primary/20 shadow-card'
+                          }`}
+                          whileHover={{ scale: 1.1 }}
+                          transition={{ duration: 0.2 }}
+                        >
                           {message.role === 'user' ? (
-                            <User className="w-4 h-4" />
+                            <User className="w-5 h-5 text-white" />
                           ) : (
-                            <Bot className="w-4 h-4" />
+                            <motion.div
+                              animate={{ rotate: [0, 10, -10, 0] }}
+                              transition={{ duration: 3, repeat: Infinity }}
+                            >
+                              <Bot className="w-5 h-5 text-primary" />
+                            </motion.div>
                           )}
-                        </div>
-                        <div className={`rounded-lg px-4 py-3 ${
+                        </motion.div>
+                        <div className={`rounded-3xl px-6 py-4 relative ${
                           message.role === 'user'
-                            ? 'bg-primary text-white'
-                            : 'bg-neutral-200 text-text-primary'
+                            ? 'chat-bubble-user text-white'
+                            : 'chat-bubble-bot text-text-primary bg-gradient-to-br from-white/90 to-neutral-light/80'
                         }`}>
-                          <p className="text-sm leading-relaxed">{message.content}</p>
-                          <span className={`text-xs mt-2 block opacity-70`}>
+                          <p className="text-sm leading-relaxed font-medium">{message.content}</p>
+                          <span className={`text-xs mt-2 block opacity-70 font-medium`}>
                             {message.timestamp.toLocaleTimeString([], { 
                               hour: '2-digit', 
                               minute: '2-digit' 
                             })}
                           </span>
+                          {/* Speech bubble tail */}
+                          {message.role === 'user' ? (
+                            <div className="absolute top-4 -right-2 w-4 h-4 bg-gradient-to-br from-primary to-secondary transform rotate-45 rounded-sm" />
+                          ) : (
+                            <div className="absolute top-4 -left-2 w-4 h-4 bg-gradient-to-br from-white/90 to-neutral-light/80 transform rotate-45 rounded-sm" />
+                          )}
                         </div>
                       </div>
                     </motion.div>
@@ -192,16 +230,33 @@ const AIMentorSection = () => {
                     animate={{ opacity: 1, y: 0 }}
                     className="flex justify-start"
                   >
-                    <div className="flex items-start gap-3">
-                      <div className="w-8 h-8 rounded-full bg-secondary text-text-primary flex items-center justify-center">
-                        <Bot className="w-4 h-4" />
-                      </div>
-                      <div className="bg-neutral-200 rounded-lg px-4 py-3">
-                        <div className="flex gap-1">
-                          <div className="w-2 h-2 bg-text-secondary rounded-full animate-bounce" />
-                          <div className="w-2 h-2 bg-text-secondary rounded-full animate-bounce" style={{animationDelay: '0.1s'}} />
-                          <div className="w-2 h-2 bg-text-secondary rounded-full animate-bounce" style={{animationDelay: '0.2s'}} />
+                    <div className="flex items-start gap-4">
+                      <motion.div 
+                        className="w-12 h-12 rounded-full bg-gradient-to-br from-neutral-light to-white border-2 border-primary/20 shadow-card flex items-center justify-center"
+                        animate={{ scale: [1, 1.05, 1] }}
+                        transition={{ duration: 1, repeat: Infinity }}
+                      >
+                        <Bot className="w-5 h-5 text-primary" />
+                      </motion.div>
+                      <div className="chat-bubble-bot bg-gradient-to-br from-white/90 to-neutral-light/80 px-6 py-4 relative">
+                        <div className="flex gap-2">
+                          <motion.div 
+                            className="w-3 h-3 bg-primary rounded-full"
+                            animate={{ scale: [1, 1.2, 1] }}
+                            transition={{ duration: 0.8, repeat: Infinity, delay: 0 }}
+                          />
+                          <motion.div 
+                            className="w-3 h-3 bg-secondary rounded-full"
+                            animate={{ scale: [1, 1.2, 1] }}
+                            transition={{ duration: 0.8, repeat: Infinity, delay: 0.2 }}
+                          />
+                          <motion.div 
+                            className="w-3 h-3 bg-neon-pink rounded-full"
+                            animate={{ scale: [1, 1.2, 1] }}
+                            transition={{ duration: 0.8, repeat: Infinity, delay: 0.4 }}
+                          />
                         </div>
+                        <div className="absolute top-4 -left-2 w-4 h-4 bg-gradient-to-br from-white/90 to-neutral-light/80 transform rotate-45 rounded-sm" />
                       </div>
                     </div>
                   </motion.div>
@@ -216,40 +271,44 @@ const AIMentorSection = () => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                className="space-y-2"
+                className="space-y-3"
               >
-                <p className="text-sm text-text-secondary">Try asking:</p>
-                <div className="flex flex-wrap gap-2">
+                <p className="text-sm font-bold text-text-secondary flex items-center gap-2">
+                  <span>💡</span> Try asking your AI bestie:
+                </p>
+                <div className="flex flex-wrap gap-3">
                   {suggestedQuestions.map((question, index) => (
-                    <button
+                    <motion.button
                       key={index}
                       onClick={() => setInputMessage(question)}
-                      className="text-xs bg-neutral-200 hover:bg-neutral-300 text-text-secondary px-3 py-2 rounded-full transition-colors duration-200"
+                      className="text-xs bg-gradient-to-r from-primary/10 to-secondary/10 hover:from-primary/20 hover:to-secondary/20 text-text-secondary hover:text-primary px-4 py-3 rounded-3xl transition-all duration-300 border border-white/20 backdrop-blur-sm font-medium"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                     >
                       {question}
-                    </button>
+                    </motion.button>
                   ))}
                 </div>
               </motion.div>
             )}
 
             {/* Input Area */}
-            <div className="flex gap-2">
+            <div className="flex gap-3">
               <Input
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="Ask me anything about your career..."
+                placeholder="Ask your AI bestie anything about your career... 💭"
                 disabled={isLoading}
-                className="flex-1"
+                className="flex-1 rounded-3xl bg-gradient-to-r from-white/90 to-neutral-light/80 backdrop-blur-sm border-2 border-white/20 focus:border-primary/50 px-6 py-3 font-medium placeholder:text-text-secondary/60"
               />
               <Button 
                 onClick={handleSendMessage}
                 disabled={isLoading || !inputMessage.trim()}
                 size="icon"
-                className="btn-scale"
+                className="btn-neon btn-scale w-12 h-12 rounded-full text-white shadow-glow-cyan"
               >
-                <Send className="w-4 h-4" />
+                <Send className="w-5 h-5" />
               </Button>
             </div>
           </CardContent>
