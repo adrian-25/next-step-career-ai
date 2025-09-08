@@ -24,6 +24,9 @@ const AIMentorSection = () => {
   ]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isRetrying, setIsRetrying] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
+  const [lastFailedMessage, setLastFailedMessage] = useState<string>('');
   const [conversationHistory, setConversationHistory] = useState<Array<{role: string, content: string}>>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
@@ -38,60 +41,104 @@ const AIMentorSection = () => {
     scrollToBottom();
   }, [messages]);
 
-  const handleSendMessage = async () => {
-    if (!inputMessage.trim() || isLoading) return;
+  const handleSendMessage = async (messageToSend?: string, attempt = 1) => {
+    const message = messageToSend || inputMessage.trim();
+    if (!message || (isLoading && !messageToSend)) return;
 
-    const userMessage = inputMessage.trim();
-    setInputMessage('');
+    // Only clear input and add user message on first attempt
+    if (attempt === 1) {
+      setInputMessage('');
+      
+      const newUserMessage: Message = {
+        role: 'user',
+        content: message,
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, newUserMessage]);
+      setRetryCount(0);
+      setLastFailedMessage(message);
+    }
     
-    // Add user message to UI
-    const newUserMessage: Message = {
-      role: 'user',
-      content: userMessage,
-      timestamp: new Date()
-    };
-    setMessages(prev => [...prev, newUserMessage]);
     setIsLoading(true);
+    if (attempt > 1) {
+      setIsRetrying(true);
+    }
 
     try {
       const { data, error } = await supabase.functions.invoke('ai-mentor', {
         body: {
-          message: userMessage,
+          message,
           conversationHistory
         }
       });
 
       if (error) throw error;
 
-      // Add AI response to UI
+      // Success - add AI response
       const aiMessage: Message = {
         role: 'assistant',
         content: data.response,
         timestamp: new Date()
       };
       setMessages(prev => [...prev, aiMessage]);
-
-      // Update conversation history for context
       setConversationHistory(data.conversationHistory || []);
+      
+      // Reset retry state on success
+      setRetryCount(0);
+      setLastFailedMessage('');
 
     } catch (error) {
-      console.error('Error sending message:', error);
+      console.error(`Attempt ${attempt} failed:`, error);
       
-      // Add AI response with error message for graceful handling
+      // Retry logic with exponential backoff (max 3 attempts)
+      if (attempt < 3) {
+        const delay = Math.pow(2, attempt - 1) * 1000; // 1s, 2s, 4s
+        setRetryCount(attempt);
+        
+        setTimeout(() => {
+          handleSendMessage(message, attempt + 1);
+        }, delay);
+        
+        return; // Don't show error message yet
+      }
+
+      // All retries failed - show error
+      const errorMessages = [
+        "Our AI bestie is recharging ⚡ Try again in a moment!",
+        "Oops! Your AI mentor stepped away for coffee ☕ Give it another shot!",
+        "Technical glow-down 😅 But don't worry, try again and we'll be back!",
+        "AI mentor is having a moment 🤖💭 Refresh and let's chat!"
+      ];
+      
+      const randomErrorMessage = errorMessages[Math.floor(Math.random() * errorMessages.length)];
+      
       const errorMessage: Message = {
         role: 'assistant',
-        content: "I apologize, but I'm experiencing technical difficulties right now. Our AI mentor is busy helping other users. Please try again in a few moments, and I'll be happy to help with your career questions!",
+        content: randomErrorMessage,
         timestamp: new Date()
       };
       setMessages(prev => [...prev, errorMessage]);
       
       toast({
-        title: "Connection Issue",
-        description: "Our AI mentor is busy. Please try again in a few seconds.",
+        title: "Connection Issue 🔄",
+        description: "Our AI mentor is recharging. Try the retry button below!",
         variant: "destructive"
       });
+      
+      setRetryCount(0);
     } finally {
       setIsLoading(false);
+      setIsRetrying(false);
+    }
+  };
+
+  const handleSendClick = () => {
+    handleSendMessage();
+  };
+
+  const handleRetry = () => {
+    if (lastFailedMessage) {
+      handleSendMessage(lastFailedMessage);
     }
   };
 
@@ -232,31 +279,53 @@ const AIMentorSection = () => {
                   >
                     <div className="flex items-start gap-4">
                       <motion.div 
-                        className="w-12 h-12 rounded-full bg-gradient-to-br from-neutral-light to-white border-2 border-primary/20 shadow-card flex items-center justify-center"
-                        animate={{ scale: [1, 1.05, 1] }}
-                        transition={{ duration: 1, repeat: Infinity }}
+                        className="w-12 h-12 rounded-full bg-gradient-to-br from-neutral-light to-white border-2 border-primary/20 shadow-glow-cyan flex items-center justify-center"
+                        animate={{ 
+                          rotate: [0, 360],
+                          scale: [1, 1.1, 1]
+                        }}
+                        transition={{ 
+                          rotate: { duration: 2, repeat: Infinity, ease: "linear" },
+                          scale: { duration: 1.5, repeat: Infinity }
+                        }}
                       >
                         <Bot className="w-5 h-5 text-primary" />
                       </motion.div>
-                      <div className="chat-bubble-bot bg-gradient-to-br from-white/90 to-neutral-light/80 px-6 py-4 relative">
-                        <div className="flex gap-2">
-                          <motion.div 
-                            className="w-3 h-3 bg-primary rounded-full"
-                            animate={{ scale: [1, 1.2, 1] }}
-                            transition={{ duration: 0.8, repeat: Infinity, delay: 0 }}
-                          />
-                          <motion.div 
-                            className="w-3 h-3 bg-secondary rounded-full"
-                            animate={{ scale: [1, 1.2, 1] }}
-                            transition={{ duration: 0.8, repeat: Infinity, delay: 0.2 }}
-                          />
-                          <motion.div 
-                            className="w-3 h-3 bg-neon-pink rounded-full"
-                            animate={{ scale: [1, 1.2, 1] }}
-                            transition={{ duration: 0.8, repeat: Infinity, delay: 0.4 }}
-                          />
+                      <div className="chat-bubble-bot bg-gradient-to-br from-white/90 to-neutral-light/80 px-6 py-4 relative border border-primary/10 shadow-glow-subtle">
+                        <div className="flex items-center gap-3">
+                          <div className="flex gap-2">
+                            <motion.div 
+                              className="w-3 h-3 bg-gradient-to-r from-primary to-secondary rounded-full"
+                              animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
+                              transition={{ duration: 0.6, repeat: Infinity, delay: 0 }}
+                            />
+                            <motion.div 
+                              className="w-3 h-3 bg-gradient-to-r from-secondary to-neon-pink rounded-full"
+                              animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
+                              transition={{ duration: 0.6, repeat: Infinity, delay: 0.2 }}
+                            />
+                            <motion.div 
+                              className="w-3 h-3 bg-gradient-to-r from-neon-pink to-primary rounded-full"
+                              animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
+                              transition={{ duration: 0.6, repeat: Infinity, delay: 0.4 }}
+                            />
+                          </div>
+                          {isRetrying && retryCount > 0 && (
+                            <motion.div
+                              initial={{ opacity: 0, scale: 0.8 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              className="flex items-center gap-2 text-xs"
+                            >
+                              <span className="text-primary font-bold">Retry {retryCount}/3</span>
+                              <motion.div
+                                animate={{ rotate: [0, 360] }}
+                                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                                className="w-3 h-3 border border-primary border-t-transparent rounded-full"
+                              />
+                            </motion.div>
+                          )}
                         </div>
-                        <div className="absolute top-4 -left-2 w-4 h-4 bg-gradient-to-br from-white/90 to-neutral-light/80 transform rotate-45 rounded-sm" />
+                        <div className="absolute top-4 -left-2 w-4 h-4 bg-gradient-to-br from-white/90 to-neutral-light/80 transform rotate-45 rounded-sm border-l border-t border-primary/10" />
                       </div>
                     </div>
                   </motion.div>
@@ -292,6 +361,31 @@ const AIMentorSection = () => {
               </motion.div>
             )}
 
+            {/* Retry Button */}
+            {lastFailedMessage && !isLoading && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-center"
+              >
+                <Button
+                  onClick={handleRetry}
+                  variant="outline"
+                  size="sm"
+                  className="border-2 border-primary/30 bg-gradient-to-r from-primary/10 to-secondary/10 hover:from-primary/20 hover:to-secondary/20 text-primary hover:text-white transition-all duration-300 rounded-3xl px-6 py-2 font-bold shadow-glow-subtle"
+                >
+                  <motion.div
+                    animate={{ rotate: [0, 360] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                    className="mr-2"
+                  >
+                    🔄
+                  </motion.div>
+                  Retry Last Message
+                </Button>
+              </motion.div>
+            )}
+
             {/* Input Area */}
             <div className="flex gap-3">
               <Input
@@ -303,7 +397,7 @@ const AIMentorSection = () => {
                 className="flex-1 rounded-3xl bg-gradient-to-r from-white/90 to-neutral-light/80 backdrop-blur-sm border-2 border-white/20 focus:border-primary/50 px-6 py-3 font-medium placeholder:text-text-secondary/60"
               />
               <Button 
-                onClick={handleSendMessage}
+                onClick={handleSendClick}
                 disabled={isLoading || !inputMessage.trim()}
                 size="icon"
                 className="btn-neon btn-scale w-12 h-12 rounded-full text-white shadow-glow-cyan"
