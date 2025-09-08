@@ -45,6 +45,9 @@ serve(async (req) => {
       throw new Error('OpenAI API key not configured');
     }
 
+    console.log('OpenAI API Key exists:', !!openAIApiKey);
+    console.log('API Key starts with:', openAIApiKey?.substring(0, 7));
+
     // Build conversation with system prompt and recent history
     const messages = [
       { role: 'system', content: CAREER_SYSTEM_PROMPT },
